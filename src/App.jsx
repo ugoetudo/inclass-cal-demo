@@ -36,6 +36,19 @@ function getCalendarMonth(year, month) {
   return weeks;
 }
 
+export function CalendarDay ({day}) {
+  return (
+    <div>
+      <div>
+        {day.getDate()}
+      </div>
+      <div>
+        <p>No Events</p>
+      </div>
+    </div>
+  )
+}
+
 export function App() {
   const today = new Date(Date.now());
   const monthCal = getCalendarMonth(today.getFullYear(), today.getMonth());
@@ -53,7 +66,7 @@ export function App() {
           <tr key={ix}>
             {week.map((day, di) => 
               <td key={di}>
-                {day.toDateString()}
+                <CalendarDay day={day}/> 
               </td>
             )}
           </tr>
