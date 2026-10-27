@@ -10,6 +10,12 @@ const days = {
   6: "SAT"
 };
 
+const monthNames = {
+  0: "January", 1: "February", 2: "March", 3: "April",
+  4: "May", 5: "June", 6: "July", 7: "August",
+  8: "September", 9: "October", 10: "November", 11: "December"
+};
+
 function getCalendarMonth(year, month) {
   var firstDay = new Date(year, month, 1);
   var daysTillZero = firstDay.getDay();
@@ -49,29 +55,42 @@ export function CalendarDay ({day}) {
   )
 }
 
+export function CalendarControls ({month, nextMonth, prevMonth}){
+  return (
+    <div>
+      <button>Prev</button>
+      <h2>{month}</h2>
+      <button>Next</button>
+    </div>
+  )
+}
+
 export function App() {
   const today = new Date(Date.now());
   const monthCal = getCalendarMonth(today.getFullYear(), today.getMonth());
   return (
-    <table>
-      <thead>
-        <tr>
-          {Object.values(days).map((day, ix) => 
-            <th key={ix}>{day}</th>
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {monthCal.map((week, ix) => 
-          <tr key={ix}>
-            {week.map((day, di) => 
-              <td key={di}>
-                <CalendarDay day={day}/> 
-              </td>
+    <>
+      <CalendarControls month={monthNames[today.getMonth()]}/>
+      <table>
+        <thead>
+          <tr>
+            {Object.values(days).map((day, ix) => 
+              <th key={ix}>{day}</th>
             )}
           </tr>
-        )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {monthCal.map((week, ix) => 
+            <tr key={ix}>
+              {week.map((day, di) => 
+                <td key={di}>
+                  <CalendarDay day={day}/> 
+                </td>
+              )}
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </>
   );
 }
