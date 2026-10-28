@@ -1,4 +1,5 @@
 import './App.css';
+import { useState } from 'react';
 
 const days = {
   0: "SUN",
@@ -23,7 +24,7 @@ function getCalendarMonth(year, month) {
     firstDay.setDate(firstDay.getDate() - daysTillZero);
   }
   var currentDay = new Date(firstDay);
-  var weeks = new Array(5);
+  var weeks = new Array(6);
   for (let i = 0; i < weeks.length; i++) {
     var week = new Array(7);
     for (let j=0; j < 7; j++) {
@@ -57,21 +58,35 @@ export function CalendarDay ({day}) {
 
 export function CalendarControls ({month, nextMonth, prevMonth}){
   return (
-    <div>
-      <button>Prev</button>
-      <h2>{month}</h2>
-      <button>Next</button>
+    <div className="flex flex-row gap-2 p-2">
+      <div>
+        <button className="bg-blue-500 text-white p-2 rounded"
+                onClick={prevMonth()}>Prev</button>
+      </div>
+      <div>
+        <p className="text-3xl">{month}</p>
+      </div>
+      <div>
+        <button className="bg-blue-500 text-white p-2 rounded">Next</button>
+      </div>
     </div>
   )
 }
 
 export function App() {
-  const today = new Date(Date.now());
-  const monthCal = getCalendarMonth(today.getFullYear(), today.getMonth());
+  //const today = new Date(Date.now());
+  var [focalDate, setFocalDate] = useState(new Date(Date.now()))
+
+  var prevMonth = () => {
+    var curMonth = focalDate.getMonth() - 1
+    setFocalDate(new Date(focalDate.getFullYear(), curMonth, 1))
+  }
+  const monthCal = getCalendarMonth(focalDate.getFullYear(), focalDate.getMonth());
   return (
     <>
-      <CalendarControls month={monthNames[today.getMonth()]}/>
-      <table>
+      <CalendarControls month={monthNames[focalDate.getMonth()]}
+                        prevMonth={() => prevMonth}/>
+      <table className="">
         <thead>
           <tr>
             {Object.values(days).map((day, ix) => 
