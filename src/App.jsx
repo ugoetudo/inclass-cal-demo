@@ -56,7 +56,7 @@ export function CalendarDay ({day}) {
   )
 }
 
-export function CalendarControls ({month, nextMonth, prevMonth}){
+export function CalendarControls ({month, year, nextMonth, prevMonth}){
   return (
     <div className="flex flex-row gap-2 p-2">
       <div>
@@ -64,10 +64,11 @@ export function CalendarControls ({month, nextMonth, prevMonth}){
                 onClick={prevMonth()}>Prev</button>
       </div>
       <div>
-        <p className="text-3xl">{month}</p>
+        <p className="text-3xl">{month} {year}</p>
       </div>
       <div>
-        <button className="bg-blue-500 text-white p-2 rounded">Next</button>
+        <button className="bg-blue-500 text-white p-2 rounded"
+                onClick={nextMonth()}>Next</button>
       </div>
     </div>
   )
@@ -81,11 +82,18 @@ export function App() {
     var curMonth = focalDate.getMonth() - 1
     setFocalDate(new Date(focalDate.getFullYear(), curMonth, 1))
   }
+  var nextMonth = () => {
+    var curMonth = focalDate.getMonth() + 1
+    setFocalDate(new Date(focalDate.getFullYear(), curMonth, 1))
+  }
+
   const monthCal = getCalendarMonth(focalDate.getFullYear(), focalDate.getMonth());
   return (
     <>
       <CalendarControls month={monthNames[focalDate.getMonth()]}
-                        prevMonth={() => prevMonth}/>
+                        year={focalDate.getFullYear()}
+                        prevMonth={() => prevMonth}
+                        nextMonth={() => nextMonth}/>
       <table className="">
         <thead>
           <tr>
